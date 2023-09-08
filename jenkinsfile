@@ -1,0 +1,37 @@
+pipeline {
+    agent any  // You can specify a specific agent label or node here
+
+    stages {
+        stage('Build') {
+            steps {
+                // Define the build step, e.g., using Maven
+                sh 'mvn clean package'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Define the test steps, e.g., running unit and integration tests
+                sh 'mvn test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Define deployment steps, e.g., deploying to a staging server
+                sh 'scp target/my-app.war user@staging-server:/path/to/deploy'
+            }
+        }
+    }
+    
+    post {
+        success {
+            // Define actions to perform on pipeline success
+            echo 'Pipeline succeeded! Notify or perform additional tasks here.'
+        }
+        failure {
+            // Define actions to perform on pipeline failure
+            echo 'Pipeline failed! Notify or perform error handling here.'
+        }
+    }
+}
